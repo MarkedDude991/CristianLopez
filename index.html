@@ -2,6 +2,10 @@
 <html lang="en">
 
 <head>
+  <link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+/>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
@@ -19,7 +23,9 @@
 
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
-
+<link
+  
+/>
   <!-- Vendor CSS Files -->
    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
 </head>
@@ -41,6 +47,7 @@
   ======================================================== -->
 </head>
 
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <body>
 
   <!-- ======= Mobile nav toggle button ======= -->
@@ -58,12 +65,19 @@
 
       <nav id="navbar" class="nav-menu navbar">
         <ul>
-          <li><a href="#hero" class="nav-link scrollto active"><i class="bx bx-home"></i> <span>Home</span></a></li>
-          <li><a href="#about" class="nav-link scrollto"><i class="bx bx-user"></i> <span>About</span></a></li>
-          <li><a href="#resume" class="nav-link scrollto"><i class="bx bx-file-blank"></i> <span>Resume</span></a></li>
+          <ul class="nav-links">
+  <li><a href="#hero" class="nav-link scrollto active"><i class="bx bx-home"></i><span>Home</span></a></li>
+  <li><a href="#about" class="nav-link scrollto"><i class="bx bx-user"></i><span>About</span></a></li>
+  <li><a href="#services" class="nav-link scrollto"><i class="bx bx-briefcase"></i><span>Services</span></a></li>
+  <li><a href="#resume" class="nav-link scrollto"><i class="bx bx-file-blank"></i><span>Resume</span></a></li>
+  <li><a href="#map" class="nav-link scrollto"><i class="bx bx-globe"></i><span>World Map</span></a></li>
+  <li><a href="#contact" class="nav-link scrollto"><i class="bx bx-envelope"></i><span>Contact</span></a></li>
+</ul>
+
+</li>
+
+</ul>
           
-          <li><a href="#services" class="nav-link scrollto"><i class="bx bx-server"></i> <span>Services</span></a></li>
-          <li><a href="#contact" class="nav-link scrollto"><i class="bx bx-envelope"></i> <span>Contact</span></a></li>
         </ul>
       </nav><!-- .nav-menu -->
     </div>
@@ -336,9 +350,73 @@
 
     </section><!-- End Resume Section -->
 
-    <!-- ======= Portfolio Section ======= -->
-   
-    </section><!-- End Portfolio Section -->
+    <section id="map">
+  <!-- tu mapa aquí -->
+<!-- World Map Section -->
+<section id="map" class="py-5">
+  <div class="container">
+    <h2>World Map</h2>
+    <div id="worldmap" style="height: 500px; width: 100%;"></div>
+  </div>
+</section>
+
+<!-- Leaflet JS -->
+<script
+  src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+  integrity="sha256-o9N1jEter4v2gITn2ZT2uj0vMGAw5C2hMGgoo4KdKpg="
+  crossorigin=""
+></script>
+
+<!-- Map Initialization Script -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // 1. Ciudades con coordenadas y texto según tu CV
+  const cityNotes = [
+    { coords: [-27.4679, 153.0281], text: 'Brisbane: Senior Manager, Digital Analytics & OT (Glencore)' },
+    { coords: [-27.4679, 153.0281], text: 'Brisbane: Global Digital Analytics Manager (Glencore)' },
+    { coords: [-37.8136, 144.9631], text: 'Melbourne: Product Manager (Tiger Spider)' },
+    { coords: [-33.4489, -70.6693], text: 'Santiago: Corporate Director of Digital Transformation (Codelco)' },
+    { coords: [-34.1708, -70.7395], text: 'Rancagua: Director of Innovation (Codelco El Teniente)' },
+    { coords: [-23.6500, -70.4000], text: 'Antofagasta: Mining & Process Engineer (Antofagasta PLC)' }
+  ];
+
+  // 2. Inicializa el mapa centrado en el mundo
+  const map = L.map('worldmap').setView([0, 20], 2);
+
+  // 3. Añade capa base de OpenStreetMap
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors',
+    maxZoom: 18,
+  }).addTo(map);
+
+  // 4. Crea marcadores y los asocia a tooltips que aparecen al hover
+  cityNotes.forEach(({ coords, text }) => {
+    const marker = L.marker(coords).addTo(map);
+    marker.bindTooltip(text, {
+      direction: 'top',
+      offset: [0, -10],
+      className: 'city-tooltip',
+      opacity: 0.9
+    });
+    marker.on('mouseover', () => marker.openTooltip());
+    marker.on('mouseout',  () => marker.closeTooltip());
+  });
+});
+</script>
+
+<!-- Optional: estilos para el tooltip -->
+<style>
+  .city-tooltip {
+    background-color: rgba(0, 123, 255, 0.8);
+    color: white;
+    border: none;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+  }
+</style>
+
+
 
     <!-- ======= Services Section ======= -->
    <!-- Services Section -->
