@@ -368,35 +368,67 @@
 ></script>
 
 <!-- Map Initialization Script -->
+<!-- Map Initialization Script -->
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  // 1. Ciudades con coordenadas y texto según tu CV
+  // 1. Cities with coordinates, short description and your activity
   const cityNotes = [
-    { coords: [-27.4679, 153.0281], text: 'Brisbane: Senior Manager, Digital Analytics & OT (Glencore)' },
-    { coords: [-27.4679, 153.0281], text: 'Brisbane: Global Digital Analytics Manager (Glencore)' },
-    { coords: [-37.8136, 144.9631], text: 'Melbourne: Product Manager (Tiger Spider)' },
-    { coords: [-33.4489, -70.6693], text: 'Santiago: Corporate Director of Digital Transformation (Codelco)' },
-    { coords: [-34.1708, -70.7395], text: 'Rancagua: Director of Innovation (Codelco El Teniente)' },
-    { coords: [-23.6500, -70.4000], text: 'Antofagasta: Mining & Process Engineer (Antofagasta PLC)' }
+    {
+      coords: [-27.4679, 153.0281],
+      title: 'Brisbane, Australia',
+      desc: 'Queensland capital and mining hub',
+      activity: 'Senior Manager, Digital Analytics & OT (Glencore)'
+    },
+    {
+      coords: [-37.8136, 144.9631],
+      title: 'Melbourne, Australia',
+      desc: 'Technology and innovation center',
+      activity: 'Product Manager (Tiger Spider)'
+    },
+    {
+      coords: [-33.4489, -70.6693],
+      title: 'Santiago, Chile',
+      desc: 'Codelco corporate headquarters',
+      activity: 'Corporate Director of Digital Transformation'
+    },
+    {
+      coords: [-34.1708, -70.7395],
+      title: 'Rancagua, Chile',
+      desc: 'El Teniente operations headquarters',
+      activity: 'Director of Innovation (Codelco El Teniente)'
+    },
+    {
+      coords: [-23.6500, -70.4000],
+      title: 'Antofagasta, Chile',
+      desc: 'Key port city in mining',
+      activity: 'Mining & Process Engineer (Antofagasta PLC)'
+    }
   ];
 
-  // 2. Inicializa el mapa centrado en el mundo
+  // 2. Initialize the map
   const map = L.map('worldmap').setView([0, 20], 2);
 
-  // 3. Añade capa base de OpenStreetMap
+  // 3. Add OpenStreetMap base layer
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; OpenStreetMap contributors',
-    maxZoom: 18,
+    maxZoom: 18
   }).addTo(map);
 
-  // 4. Crea marcadores y los asocia a tooltips que aparecen al hover
-  cityNotes.forEach(({ coords, text }) => {
+  // 4. Add markers with enriched tooltips
+  cityNotes.forEach(({ coords, title, desc, activity }) => {
     const marker = L.marker(coords).addTo(map);
-    marker.bindTooltip(text, {
+    const tooltipHtml = `
+      <div style="text-align:left; line-height:1.2;">
+        <strong>${title}</strong><br/>
+        <em style="font-size:0.9em; color:#555;">${desc}</em><br/>
+        <span style="font-size:0.95em;">${activity}</span>
+      </div>
+    `;
+    marker.bindTooltip(tooltipHtml, {
       direction: 'top',
       offset: [0, -10],
       className: 'city-tooltip',
-      opacity: 0.9
+      opacity: 0.95
     });
     marker.on('mouseover', () => marker.openTooltip());
     marker.on('mouseout',  () => marker.closeTooltip());
@@ -404,17 +436,18 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 
-<!-- Optional: estilos para el tooltip -->
+<!-- Optional: tooltip styling -->
 <style>
   .city-tooltip {
-    background-color: rgba(0, 123, 255, 0.8);
-    color: white;
-    border: none;
-    padding: 4px 8px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border: 1px solid #007bff;
+    color: #333;
+    padding: 6px 10px;
     border-radius: 4px;
-    font-size: 0.9rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
   }
 </style>
+
 
 
 
